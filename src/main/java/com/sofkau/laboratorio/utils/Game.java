@@ -18,6 +18,9 @@ public class Game implements ValidatorInterface {
         this.gameScore = 0;
     }
 
+    public void renderQuestion(Question quiz){
+        logger.info("Pregunta: "+ quiz.getDescription());
+    }
     @Override
     public Boolean check(String answerCorrect, String answerSelected, int level) {
         if (answerSelected.equalsIgnoreCase(answerCorrect)) {
@@ -72,6 +75,21 @@ public class Game implements ValidatorInterface {
         }
         return true;
     }
+
+    public void startGame (){
+        Login newLogin = new Login();
+        Player newPlayer = new Player(newLogin.getName()) ;
+        try {
+            DbConector conector = DbConector.getInstance();
+            Question quiz = conector.getQuestion(1);
+            Game newGame = new Game(newPlayer,quiz);
+        }catch (Exception error){
+
+        }
+
+
+
+=    }
 }
 
 
