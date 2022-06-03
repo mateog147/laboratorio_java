@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+
 public class DbConector {
     private String rootPath ;
     private String path;
@@ -49,6 +50,7 @@ public class DbConector {
         Connection conec = DriverManager.getConnection("jdbc:sqlite:"+this.path);
         try(Statement sta = conec.createStatement()){
             int res = sta.executeUpdate("INSERT INTO usuarios(USER,PUNTAJE,FECHA) VALUES('"+player.getName()+"','"+player.getScore()+"','"+date+"')");
+
             if(res>0){
                 conec.close();
                 return 1;
@@ -64,6 +66,7 @@ public class DbConector {
         int counter = 1;
         Class.forName("org.sqlite.JDBC");
         Connection conec = DriverManager.getConnection("jdbc:sqlite:"+this.path);
+
         try(Statement sta = conec.createStatement()){
             ResultSet res = sta.executeQuery("SELECT * FROM usuarios ORDER BY puntaje DESC, fecha DESC");
             while(res.next() && counter<=5){
@@ -74,7 +77,7 @@ public class DbConector {
             conec.close();
             return players;
         }
-        
+
     }
 
 }

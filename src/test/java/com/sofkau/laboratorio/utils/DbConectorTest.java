@@ -16,6 +16,7 @@ class DbConectorTest {
                  top) {
                 System.out.println( player.toString());
             }
+
         }catch(Exception e){
             System.out.print(e.getMessage());
         }
