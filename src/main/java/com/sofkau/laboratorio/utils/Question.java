@@ -7,10 +7,13 @@ public abstract class Question {
     private String correctAnswer;
     private ArrayList<String> option;
 
-    public Question(String description, String correctAnswer, ArrayList<String> option) {
+    private int score;
+
+    public Question(String description, String correctAnswer, ArrayList<String> option , int score) {
         this.description = description;
         this.correctAnswer = correctAnswer;
         this.option = option;
+        this.score=score;
     }
 
     public String getDescription() {
@@ -43,14 +46,22 @@ public abstract class Question {
         this.correctAnswer = correctAnswer;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     @Override
     public String toString() {
         return "\nPregunta: " + description + '\n' +
                 "1. " + option.get(0) + '\n' +
                 "2. " + option.get(1) + '\n' +
                 "3. " + option.get(2) + '\n' +
-                "4. " + option.get(3) + '\n';
-
+                "4. " + option.get(3) + '\n'
+                ;
     }
 
 
