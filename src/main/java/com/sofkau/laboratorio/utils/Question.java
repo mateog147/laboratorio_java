@@ -51,12 +51,12 @@ public abstract class Question {
 
     @Override
     public String toString() {
-        return "Question{" +
-                "description='" + description + '\'' +
-                ", correctAnswer='" + correctAnswer + '\'' +
-                ", option=" + option +
-                ", level=" + level +
-                '}';
+        return "\nPregunta: " + description + '\n' +
+                "1. " + option.get(0) + '\n' +
+                "2. " + option.get(1) + '\n' +
+                "3. " + option.get(2) + '\n' +
+                "4. " + option.get(3) + '\n'
+                ;
     }
 
 

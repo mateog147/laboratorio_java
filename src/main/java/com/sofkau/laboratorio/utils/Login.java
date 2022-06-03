@@ -5,7 +5,7 @@ import org.jboss.logging.Logger;
 import java.util.Scanner;
 
 public class Login {
-    String name;
+    private String name;
 
     protected static final Scanner scanner = new Scanner(System.in);
     static final org.jboss.logging.Logger logger = Logger.getLogger("logger");

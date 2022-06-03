@@ -18,12 +18,13 @@ public class Game implements ValidatorInterface {
         this.gameScore = 0;
     }
 
-    public void renderQuestion(Question quiz){
-        logger.info("Pregunta: "+ quiz.getDescription());
+    public void renderQuestion(){
+        logger.info(quiz.toString());
     }
     @Override
-    public Boolean check(String answerCorrect, String answerSelected, int level) {
-        if (answerSelected.equalsIgnoreCase(answerCorrect)) {
+    public Boolean check() {
+        String answerSelected= Login.scanner.nextLine();
+        if (answerSelected.equalsIgnoreCase(quiz.getCorrectAnswer())) {
             switch (level) {
                 case 1 -> this.gameScore += 100;
                 case 2 -> this.gameScore += 200;
@@ -89,7 +90,7 @@ public class Game implements ValidatorInterface {
 
 
 
-=    }
+    }
 }
 
 
