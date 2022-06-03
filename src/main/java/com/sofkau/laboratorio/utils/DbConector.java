@@ -87,8 +87,7 @@ public class DbConector {
             answerList.add(res.getString("RESPUESTA3"));
             answerList.add(res.getString("RESPUESTA4"));
 
-
-            LevelOne newQuestion = new LevelOne(res.getString("DESCRIPCION"), res.getString("CORRECTA"),answerList,1,"test");
+            LevelOne newQuestion = new LevelOne(res.getString("DESCRIPCION"), res.getString("CORRECTA"),answerList,"test");
             return newQuestion;
 
         }catch (Exception e){
