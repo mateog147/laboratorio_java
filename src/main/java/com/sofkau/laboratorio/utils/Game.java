@@ -7,13 +7,12 @@ import org.jboss.logging.Logger;
 import java.util.Scanner;
 
 public class Game implements ValidatorInterface {
-    Player player;
-    Question quiz;
-    int gameScore;
-    int level;
+    private Player player;
+    private Question quiz;
+    private int gameScore;
+    private int level;
     protected static final Scanner scanner = new Scanner(System.in);
-    static final Logger logger = Logger.getLogger("logger");
-
+    private static final Logger logger = Logger.getLogger("logger");
 
     public Game(Player player, Question quiz) {
         this.player = player;
@@ -32,8 +31,8 @@ public class Game implements ValidatorInterface {
         int indexCorrect = quiz.getOption().indexOf(answerCorrect)+1;
         if(indexOption==indexCorrect){
             this.level++;
+            if(level>5){win();};
             //Logica de los puntajes
-
             logger.info("Respuesta correcta");
             try{
                 DbConector conectorCheck = DbConector.getInstance();
@@ -42,46 +41,42 @@ public class Game implements ValidatorInterface {
             }catch (Exception error){
                 logger.warn(error.getMessage());
             }
-
             return true;
 
         }else {
             logger.info("Respuesta incorrecta");
+            gameOver(0);
         }
         return false;
-
     }
 
 
     @Override
-    public Boolean win(int level, String answerCorrect, String answerSelected) {
-        Boolean checkedAnswer = check();
-        if (Boolean.TRUE.equals(checkedAnswer && level == 5)) {
-
+    public void win() {
             this.player.setScore(this.gameScore);
             logger.info("¡HAS GANADO! !FELICITACIONES! \n Puntaje final: " + this.player.getScore());
-//Mandar la informacion del juego a la base de datos
-            return true;
-        }
-
-        return false;
-
-
+            savePlayer();
     }
 
     @Override
-    public Boolean gameOver(int condicion) {
-        if (condicion == 0) {
+    public void gameOver(int condicion) {
 
-            this.player.setScore(this.gameScore);
-            logger.info("HAS PERDIDO, RESPUESTA INCORRECTA \n Puntaje final: " + this.player.getScore());
-            //Mandar la informacion a la base de datos del juego
+        if (condicion == 0) {
+            logger.info("HAS PERDIDO, RESPUESTA INCORRECTA \n Puntaje final: 0");
+            savePlayer();
         } else {
             this.player.setScore(this.gameScore);
             logger.info("TE HAS RETIRADO, GRACIAS POR PARTICIPAR \n Puntaje final: " + this.player.getScore());
-            //Mandar la informacion a la base de datos del juego
+            savePlayer();
         }
-        return true;
+    }
+    private void savePlayer(){
+        DbConector conector = DbConector.getInstance();
+        try {
+            conector.savePlayer(this.player);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
     }
 
 }

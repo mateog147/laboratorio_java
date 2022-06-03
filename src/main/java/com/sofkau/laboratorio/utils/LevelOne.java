@@ -19,8 +19,14 @@ public class LevelOne extends Question{
     }
 
     @Override
-    public int level() {
-        return 0;
+    public String toString() {
+        return "\nCategoria: "+this.category+"\nNIVEL 1"+super.toString();
     }
+
+    @Override
+    public int level() {
+        return 1;
+    }
+
 
 }

@@ -84,15 +84,34 @@ public class DbConector {
             answerList.add(res.getString("RESPUESTA3"));
             answerList.add(res.getString("RESPUESTA4"));
 
-<<<<<<< HEAD
-=======
+            switch (level){
+                case 1 -> {
+                    return new LevelOne(res.getString("DESCRIPCION"), res.getString("CORRECTA"), answerList, res.getString("CATEGORIA"));
+                }
 
->>>>>>> Diego
-            LevelOne newQuestion = new LevelOne(res.getString("DESCRIPCION"), res.getString("CORRECTA"),answerList,"test");
-            return newQuestion;
+                case 2 -> {
+                    return new LevelTwo(res.getString("DESCRIPCION"), res.getString("CORRECTA"), answerList, res.getString("CATEGORIA"));
+                }
+
+                case 3 -> {
+                    return new LevelThree(res.getString("DESCRIPCION"), res.getString("CORRECTA"), answerList, res.getString("CATEGORIA"));
+                }
+
+                case 4 -> {
+                    return new LevelFour(res.getString("DESCRIPCION"), res.getString("CORRECTA"), answerList, res.getString("CATEGORIA"));
+                }
+
+                case 5 -> {
+                    return new LevelFive(res.getString("DESCRIPCION"), res.getString("CORRECTA"), answerList, res.getString("CATEGORIA"));
+                }
+
+                default -> {
+                    return null;
+                }
+            }
 
         }catch (Exception e){
-            System.out.println("erro");
+            System.out.println("error");
         }
         return null;
     }

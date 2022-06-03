@@ -16,6 +16,10 @@ public class LevelFour extends  Question{
     public void setCategory(String category) {
         this.category = category;
     }
+    @Override
+    public String toString() {
+        return "\nCategoria: "+this.category+"\nNIVEL 4"+super.toString();
+    }
 
     @Override
     public int level() {

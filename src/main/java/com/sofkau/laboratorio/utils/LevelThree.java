@@ -19,6 +19,10 @@ public class LevelThree extends Question{
     }
 
     @Override
+    public String toString() {
+        return "\nCategoria: "+this.category+"\nNIVEL 3"+super.toString();
+    }
+    @Override
     public int level() {
         return 0;
     }
