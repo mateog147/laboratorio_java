@@ -22,52 +22,55 @@ public class Game implements ValidatorInterface {
     public Boolean check(String answerCorrect, String answerSelected, int level) {
         if (answerSelected.equalsIgnoreCase(answerCorrect)) {
             switch (level) {
-                case 1 -> this.gameScore+=100;
-                case 2->this.gameScore += 200;
-                case 3->this.gameScore += 300;
-                case 4-> this.gameScore+=400;
-                case 5->this.gameScore+=500;
-                default -> this.gameScore=0;
+                case 1 -> this.gameScore += 100;
+                case 2 -> this.gameScore += 200;
+                case 3 -> this.gameScore += 300;
+                case 4 -> this.gameScore += 400;
+                case 5 -> {
+                    this.gameScore += 500;
+                    win(level, answerCorrect, answerSelected);
+                }
+                default -> this.gameScore = 0;
             }
-return true;
 
-        }else {
-            this.player.setScore(0);
-            logger.info("HAS PERDIDO, RESPUESTA INCORRECTA \n Puntaje final: "+this.player.getScore());
+            return true;
+
+        } else {
+            this.gameScore = 0;
             gameOver(0);
         }
-return false;
+        return false;
     }
 
     @Override
     public Boolean win(int level, String answerCorrect, String answerSelected) {
         Boolean checkedAnswer = check(answerCorrect, answerSelected, level);
-        if (Boolean.TRUE.equals(checkedAnswer)) {
-            this.player.setScore(500);
-logger.info("¡HAS GANADO! !FELICITACIONES! \n Puntaje final: "+this.player.getScore());
+        if (Boolean.TRUE.equals(checkedAnswer && level == 5)) {
+
+            this.player.setScore(this.gameScore);
+            logger.info("¡HAS GANADO! !FELICITACIONES! \n Puntaje final: " + this.player.getScore());
 //Mandar la informacion del juego a la base de datos
-return true;
+            return true;
         }
 
-            return false;
-
-
-
+        return false;
 
 
     }
 
     @Override
     public Boolean gameOver(int condicion) {
-       if(condicion==0){
-           //Mandar la informacion a la base de datos del juego
+        if (condicion == 0) {
 
-       }else{
-           this.player.setScore(this.gameScore);
-           logger.info("TE HAS RETIRADO, GRACIAS POR PARTICIPAR \n Puntaje final: "+ this.player.getScore());
-           //Mandar la informacion a la base de datos del juego
-       }
-       return true;
+            this.player.setScore(this.gameScore);
+            logger.info("HAS PERDIDO, RESPUESTA INCORRECTA \n Puntaje final: " + this.player.getScore());
+            //Mandar la informacion a la base de datos del juego
+        } else {
+            this.player.setScore(this.gameScore);
+            logger.info("TE HAS RETIRADO, GRACIAS POR PARTICIPAR \n Puntaje final: " + this.player.getScore());
+            //Mandar la informacion a la base de datos del juego
+        }
+        return true;
     }
 }
 
