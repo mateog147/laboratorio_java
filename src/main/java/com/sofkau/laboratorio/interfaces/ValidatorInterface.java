@@ -5,6 +5,6 @@ import com.sofkau.laboratorio.utils.Question;
 
 public interface ValidatorInterface {
     public Boolean check();
-    public Boolean win(int level,String answerCorrect,String answerSelected);
-    public Boolean gameOver(int condicion);
+    public void win();
+    public void gameOver(int condicion);
 }

@@ -4,16 +4,16 @@ import com.sofkau.laboratorio.interfaces.ValidatorInterface;
 
 import org.jboss.logging.Logger;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game implements ValidatorInterface {
-    Player player;
-    Question quiz;
-    int gameScore;
-    int level;
+    private Player player;
+    private Question quiz;
+    private int gameScore;
+    private int level;
     protected static final Scanner scanner = new Scanner(System.in);
-    static final Logger logger = Logger.getLogger("logger");
-
+    private static final Logger logger = Logger.getLogger("logger");
 
     public Game(Player player, Question quiz) {
         this.player = player;
@@ -32,60 +32,80 @@ public class Game implements ValidatorInterface {
         int indexCorrect = quiz.getOption().indexOf(answerCorrect)+1;
         if(indexOption==indexCorrect){
             this.level++;
-           //Logica de los puntajes
+            if(level>5){
+                win();
+                return false;
+            };
+            //Logica de los puntajes
+            this.gameScore+=this.quiz.getScore();
 
 
-            logger.info("Respuesta correcta");
+
             try{
                 DbConector conectorCheck = DbConector.getInstance();
                 this.quiz = conectorCheck.getQuestion(level);
-                logger.info(this.level);
             }catch (Exception error){
-
+                logger.warn(error.getMessage());
             }
-
             return true;
+        }else if(indexOption==0) {
+            gameOver(1);
+        }else{
 
-        }else {
-            logger.info("Respuesta incorrecta");
+            gameOver(0);
         }
-return false;
-
+        return false;
     }
 
 
     @Override
-    public Boolean win(int level, String answerCorrect, String answerSelected) {
-        Boolean checkedAnswer = check();
-        if (Boolean.TRUE.equals(checkedAnswer && level == 5)) {
-
+    public void win() {
             this.player.setScore(this.gameScore);
             logger.info("¡HAS GANADO! !FELICITACIONES! \n Puntaje final: " + this.player.getScore());
-//Mandar la informacion del juego a la base de datos
-            return true;
-        }
-
-        return false;
-
-
+            savePlayer();
+            printRanking();
     }
 
     @Override
-    public Boolean gameOver(int condicion) {
-        if (condicion == 0) {
+    public void gameOver(int condicion) {
 
-            this.player.setScore(this.gameScore);
-            logger.info("HAS PERDIDO, RESPUESTA INCORRECTA \n Puntaje final: " + this.player.getScore());
-            //Mandar la informacion a la base de datos del juego
+        if (condicion == 0) {
+            logger.info("HAS PERDIDO, RESPUESTA INCORRECTA \n Puntaje final: 0");
+            savePlayer();
+            printRanking();
         } else {
             this.player.setScore(this.gameScore);
-            logger.info("TE HAS RETIRADO, GRACIAS POR PARTICIPAR \n Puntaje final: " + this.player.getScore());
-            //Mandar la informacion a la base de datos del juego
+            logger.info("TE HAS RETIRADO, GRACIAS POR PARTICIPAR \n Puntaje final: " + this.player.getScore()+" DOLARES!!");
+            savePlayer();
+            printRanking();
         }
-        return true;
+    }
+    private void savePlayer(){
+        DbConector conector = DbConector.getInstance();
+        try {
+            conector.savePlayer(this.player);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+    }
+
+    public void printRanking (){
+        try {
+            DbConector conector = DbConector.getInstance();
+            ArrayList<Player> players=  conector.topPlayers();
+            StringBuilder stringPlayers = new StringBuilder();
+            stringPlayers.append("\nJugador     Score\n");
+            players.forEach(
+
+                    (x)-> stringPlayers.append(x.getName()+"     "+x.getScore()+"\n")
+            );
+            logger.info(stringPlayers.toString());
+        }catch (Exception error){
+          logger.warn(error);
+        }
+
     }
 
 }
-
 
 

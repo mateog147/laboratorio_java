@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class LevelFive extends Question{
     private String category;
-
-    public LevelFive(String description, String correctAnswer, ArrayList<String> option, int level, String category) {
-        super(description, correctAnswer, option, level);
+    private static final int SCORE=800;
+    public LevelFive(String description, String correctAnswer, ArrayList<String> option, String category) {
+        super(description, correctAnswer, option,810);
         this.category=category;
     }
 
@@ -16,6 +16,10 @@ public class LevelFive extends Question{
 
     public void setCategory(String category) {
         this.category = category;
+    }
+    @Override
+    public String toString() {
+        return "\nCategoria: "+this.category+"\nNIVEL 5"+super.toString();
     }
 
     @Override

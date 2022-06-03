@@ -6,13 +6,14 @@ public abstract class Question {
     private String description;
     private String correctAnswer;
     private ArrayList<String> option;
-    private int level;
 
-    public Question(String description, String correctAnswer, ArrayList<String> option, int level) {
+    private int score;
+
+    public Question(String description, String correctAnswer, ArrayList<String> option , int score) {
         this.description = description;
         this.correctAnswer = correctAnswer;
         this.option = option;
-        this.level = level;
+        this.score=score;
     }
 
     public String getDescription() {
@@ -39,27 +40,29 @@ public abstract class Question {
         this.option = option;
     }
 
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
     public abstract int level();
 
     public void setCorrectAnswer(String correctAnswer) {
         this.correctAnswer = correctAnswer;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     @Override
     public String toString() {
+
         return "\nPregunta: " + description + '\n' +
                 "1. " + option.get(0) + '\n' +
                 "2. " + option.get(1) + '\n' +
                 "3. " + option.get(2) + '\n' +
-                "4. " + option.get(3) + '\n'
+                "4. " + option.get(3) + "\n \n" +
+                "Si quiere retirarse del juego ingrese 0"
                 ;
     }
 
