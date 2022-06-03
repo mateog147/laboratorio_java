@@ -6,13 +6,11 @@ public abstract class Question {
     private String description;
     private String correctAnswer;
     private ArrayList<String> option;
-    private int level;
 
-    public Question(String description, String correctAnswer, ArrayList<String> option, int level) {
+    public Question(String description, String correctAnswer, ArrayList<String> option) {
         this.description = description;
         this.correctAnswer = correctAnswer;
         this.option = option;
-        this.level = level;
     }
 
     public String getDescription() {
@@ -39,14 +37,6 @@ public abstract class Question {
         this.option = option;
     }
 
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
     public abstract int level();
 
     @Override
@@ -55,7 +45,6 @@ public abstract class Question {
                 "description='" + description + '\'' +
                 ", correctAnswer='" + correctAnswer + '\'' +
                 ", option=" + option +
-                ", level=" + level +
                 '}';
     }
 

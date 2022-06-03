@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class LevelThree extends Question{
     private String category;
-
-    public LevelThree(String description, String correctAnswer, ArrayList<String> option, int level, String category) {
-        super(description, correctAnswer, option, level);
+    private static final int award=300;
+    public LevelThree(String description, String correctAnswer, ArrayList<String> option, String category) {
+        super(description, correctAnswer, option);
         this.category=category;
     }
 
