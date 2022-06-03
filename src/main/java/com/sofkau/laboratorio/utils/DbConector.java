@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class DbConector {
     private String rootPath ;
@@ -41,13 +42,13 @@ public class DbConector {
         }
     }
 
-    public Integer savePlayer(String name, int score) throws Exception{
+    public Integer savePlayer(Player player) throws Exception{
         LocalDate date = LocalDate.now();
         //me conecto a la base de datos
         Class.forName("org.sqlite.JDBC");
         Connection conec = DriverManager.getConnection("jdbc:sqlite:"+this.path);
         try(Statement sta = conec.createStatement()){
-            int res = sta.executeUpdate("INSERT INTO usuarios(USER,PUNTAJE,FECHA) VALUES('"+name+"','"+score+"','"+date+"')");
+            int res = sta.executeUpdate("INSERT INTO usuarios(USER,PUNTAJE,FECHA) VALUES('"+player.getName()+"','"+player.getScore()+"','"+date+"')");
             if(res>0){
                 conec.close();
                 return 1;
@@ -58,11 +59,11 @@ public class DbConector {
         }
     }
 
-    static public ArrayList<Player> top() throws Exception{
+    public ArrayList<Player> topPlayers() throws Exception{
         ArrayList<Player> players = new ArrayList<Player>();
         int counter = 1;
         Class.forName("org.sqlite.JDBC");
-        Connection conec = DriverManager.getConnection("jdbc:sqlite:"+RUTA);
+        Connection conec = DriverManager.getConnection("jdbc:sqlite:"+this.path);
         try(Statement sta = conec.createStatement()){
             ResultSet res = sta.executeQuery("SELECT * FROM usuarios ORDER BY puntaje DESC, fecha DESC");
             while(res.next() && counter<=5){
@@ -73,6 +74,7 @@ public class DbConector {
             conec.close();
             return players;
         }
+        
     }
 
 }
