@@ -1,17 +1,50 @@
 package com.sofkau.laboratorio.utils;
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.logging.Logger;
+
+/**
+ * Clase de conección a la base de datos.
+ *
+ * Se conecta a la base de datos usando el driver del JDBS de SQLite.
+ *
+ * Consulta pregunta.
+ * Guarda los usuarios y sus puntajes.
+ * Consulta jugadores.
+ *
+ * @author Mateo Gutierrez <mateog147@hotmail.com>
+ * @version 1.0.0 2022/06/03
+ * @since 1.0.0
+ */
 public class DbConector {
     private String rootPath ;
     private String path;
+    /**
+     * Constantes Estirng para conexión y consulta
+     */
+    private static final String DBMS ="org.sqlite.JDBC";
+    private static final String JDBC ="jdbc:sqlite:";
+    private static final String DESCOL ="DESCRIPCION";
+    private static final String CORCOL ="CORRECTA";
+    private static final String CATCOL ="CATEGORIA";
 
-    private static  DbConector CONECTOR = new DbConector();
+    /**
+     * Intancia de la clase Random
+     */
+    private Random random = new Random();
 
+    /**
+     * Unica intancia de clase que se retornara al pedirla dentro de la aplicación
+     */
+    private static final   DbConector CONECTOR = new DbConector();
+
+    /**
+     * Retorna la instancia de clase.
+     * @return DbConector
+     */
     public static DbConector getInstance(){
         return CONECTOR;
     }
@@ -20,30 +53,49 @@ public class DbConector {
         this.path = rootPath + "/src/main/java/com/sofkau/laboratorio/data/gameDb.db";
     }
 
-    public Question getQuestion(int level) throws Exception{
-        int index = (int) Math.floor(Math.random()*5 + 1);
-        Class.forName("org.sqlite.JDBC");
-        Connection conec = DriverManager.getConnection("jdbc:sqlite:"+path);
+    /**
+     * Retorna un objeto pregunta.
+     * De las clases hijas de question.
+     * Devuelve la clase segunel nivel ingresado.
+     * @param level int Nivel de la pregunta
+     * @return Question
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public Question getQuestion(int level) throws SQLException,ClassNotFoundException{
+
+        int index = random.nextInt(6);
+        Class.forName(DBMS);
+        Connection conec = DriverManager.getConnection(JDBC+path);
         try(Statement sta = conec.createStatement()){
             ResultSet res = sta.executeQuery("SELECT * FROM preguntas where nivel = '"+level+"' AND PREGUNTA == '"+index+"'");
             if(res.next()){
-                //Question newQuestion = new Question(res.getString("DESCRIPCION"), res.getString("RESPUESTA1"), res.getString("RESPUESTA2"), res.getString("RESPUESTA3"), res.getString("RESPUESTA4"), res.getString("CORRECTA"));
                 Question newQuestion = createQuestion(res,level);
                 conec.close();
                 return newQuestion;
             }
             else{
                 conec.close();
-                throw new Exception("Error al cargar");
+                throw new SQLException("Error al cargar");
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
-    public Integer savePlayer(Player player) throws Exception{
+    /**
+     * Metodo para almacenar un jugador en la bae de datos.
+     *
+     * @param player Player
+     * @return Integer 1 si fue exitoso 0 si no lo fue
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public Integer savePlayer(Player player) throws SQLException,ClassNotFoundException{
         LocalDate date = LocalDate.now();
-        //me conecto a la base de datos
-        Class.forName("org.sqlite.JDBC");
-        Connection conec = DriverManager.getConnection("jdbc:sqlite:"+this.path);
+        Class.forName(DBMS);
+        Connection conec = DriverManager.getConnection(JDBC+this.path);
         try(Statement sta = conec.createStatement()){
             int res = sta.executeUpdate("INSERT INTO usuarios(USER,PUNTAJE,FECHA) VALUES('"+player.getName()+"','"+player.getScore()+"','"+date+"')");
 
@@ -57,11 +109,18 @@ public class DbConector {
         }
     }
 
-    public ArrayList<Player> topPlayers() throws Exception{
-        ArrayList<Player> players = new ArrayList<Player>();
+    /**
+     * Metodo que retorna el Top 5 de Jugadores.
+     *
+     * @return ArrayList<Player>
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public ArrayList<Player> topPlayers() throws SQLException,ClassNotFoundException{
+        ArrayList<Player> players = new ArrayList<>();
         int counter = 1;
-        Class.forName("org.sqlite.JDBC");
-        Connection conec = DriverManager.getConnection("jdbc:sqlite:"+this.path);
+        Class.forName(DBMS);
+        Connection conec = DriverManager.getConnection(JDBC+this.path);
 
         try(Statement sta = conec.createStatement()){
             ResultSet res = sta.executeQuery("SELECT * FROM usuarios ORDER BY puntaje DESC, fecha DESC");
@@ -86,23 +145,23 @@ public class DbConector {
 
             switch (level){
                 case 1 -> {
-                    return new LevelOne(res.getString("DESCRIPCION"), res.getString("CORRECTA"), answerList, res.getString("CATEGORIA"));
+                    return new LevelOne(res.getString(DESCOL), res.getString(CORCOL), answerList, res.getString(CATCOL));
                 }
 
                 case 2 -> {
-                    return new LevelTwo(res.getString("DESCRIPCION"), res.getString("CORRECTA"), answerList, res.getString("CATEGORIA"));
+                    return new LevelTwo(res.getString(DESCOL), res.getString(CORCOL), answerList, res.getString(CATCOL));
                 }
 
                 case 3 -> {
-                    return new LevelThree(res.getString("DESCRIPCION"), res.getString("CORRECTA"), answerList, res.getString("CATEGORIA"));
+                    return new LevelThree(res.getString(DESCOL), res.getString(CORCOL), answerList, res.getString(CATCOL));
                 }
 
                 case 4 -> {
-                    return new LevelFour(res.getString("DESCRIPCION"), res.getString("CORRECTA"), answerList, res.getString("CATEGORIA"));
+                    return new LevelFour(res.getString(DESCOL), res.getString(CORCOL), answerList, res.getString(CATCOL));
                 }
 
                 case 5 -> {
-                    return new LevelFive(res.getString("DESCRIPCION"), res.getString("CORRECTA"), answerList, res.getString("CATEGORIA"));
+                    return new LevelFive(res.getString(DESCOL), res.getString(CORCOL), answerList, res.getString(CATCOL));
                 }
 
                 default -> {
@@ -111,7 +170,8 @@ public class DbConector {
             }
 
         }catch (Exception e){
-            System.out.println("error");
+            Logger logger = Logger.getLogger("logger");
+            logger.warning("error");
         }
         return null;
     }
