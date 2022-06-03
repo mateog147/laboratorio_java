@@ -61,7 +61,8 @@ public abstract class Question {
                 "1. " + option.get(0) + '\n' +
                 "2. " + option.get(1) + '\n' +
                 "3. " + option.get(2) + '\n' +
-                "4. " + option.get(3) + '\n'
+                "4. " + option.get(3) + "\n \n" +
+                "Si quiere retirarse del juego ingrese 0"
                 ;
     }
 
