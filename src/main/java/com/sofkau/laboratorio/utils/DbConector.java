@@ -58,4 +58,21 @@ public class DbConector {
         }
     }
 
+    static public ArrayList<Player> top() throws Exception{
+        ArrayList<Player> players = new ArrayList<Player>();
+        int counter = 1;
+        Class.forName("org.sqlite.JDBC");
+        Connection conec = DriverManager.getConnection("jdbc:sqlite:"+RUTA);
+        try(Statement sta = conec.createStatement()){
+            ResultSet res = sta.executeQuery("SELECT * FROM usuarios ORDER BY puntaje DESC, fecha DESC");
+            while(res.next() && counter<=5){
+                Player player = new Player(res.getString("USER"),res.getInt("puntaje"));
+                players.add(player);
+                counter+=1;
+            }
+            conec.close();
+            return players;
+        }
+    }
+
 }
