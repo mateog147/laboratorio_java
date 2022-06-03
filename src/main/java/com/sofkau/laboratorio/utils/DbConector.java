@@ -23,7 +23,7 @@ public class DbConector {
         this.path = rootPath + "/src/main/java/com/sofkau/laboratorio/data/gameDb.db";
     }
 
-    public void getQuestion(int level) throws Exception{
+    public Question getQuestion(int level) throws Exception{
         int index = (int) Math.floor(Math.random()*5 + 1);
         Class.forName("org.sqlite.JDBC");
         Connection conec = DriverManager.getConnection("jdbc:sqlite:"+path);
@@ -31,10 +31,9 @@ public class DbConector {
             ResultSet res = sta.executeQuery("SELECT * FROM preguntas where nivel = '"+level+"' AND PREGUNTA == '"+index+"'");
             if(res.next()){
                 //Question newQuestion = new Question(res.getString("DESCRIPCION"), res.getString("RESPUESTA1"), res.getString("RESPUESTA2"), res.getString("RESPUESTA3"), res.getString("RESPUESTA4"), res.getString("CORRECTA"));
-                System.out.println("Conectado");
-                System.out.println(res.getString("DESCRIPCION"));
+                Question newQuestion = createQuestion(res,level);
                 conec.close();
-                //return newQuestion;
+                return newQuestion;
             }
             else{
                 conec.close();
@@ -77,7 +76,25 @@ public class DbConector {
             conec.close();
             return players;
         }
+    }
 
+    private Question createQuestion(ResultSet res, int level){
+
+        try {
+            ArrayList<String> answerList = new ArrayList<>();
+            answerList.add(res.getString("RESPUESTA1"));
+            answerList.add(res.getString("RESPUESTA2"));
+            answerList.add(res.getString("RESPUESTA3"));
+            answerList.add(res.getString("RESPUESTA4"));
+
+
+            LevelOne newQuestion = new LevelOne(res.getString("DESCRIPCION"), res.getString("CORRECTA"),answerList,1,"test");
+            return newQuestion;
+
+        }catch (Exception e){
+            System.out.println("erro");
+        }
+        return null;
     }
 
 }

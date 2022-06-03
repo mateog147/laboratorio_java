@@ -8,7 +8,8 @@ class DbConectorTest {
         Player testPlayer = new Player("Prueba", 100);
         ArrayList<Player> top = new ArrayList<>();
         try {
-            conector.getQuestion(1);
+            Question qtest = conector.getQuestion(1);
+            System.out.println(qtest.getDescription());
             System.out.println(conector.savePlayer(testPlayer));
             top=conector.topPlayers();
 
