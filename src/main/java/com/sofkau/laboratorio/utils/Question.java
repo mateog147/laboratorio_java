@@ -39,13 +39,18 @@ public abstract class Question {
 
     public abstract int level();
 
+    public void setCorrectAnswer(String correctAnswer) {
+        this.correctAnswer = correctAnswer;
+    }
+
     @Override
     public String toString() {
-        return "Question{" +
-                "description='" + description + '\'' +
-                ", correctAnswer='" + correctAnswer + '\'' +
-                ", option=" + option +
-                '}';
+        return "\nPregunta: " + description + '\n' +
+                "1. " + option.get(0) + '\n' +
+                "2. " + option.get(1) + '\n' +
+                "3. " + option.get(2) + '\n' +
+                "4. " + option.get(3) + '\n';
+
     }
 
 
