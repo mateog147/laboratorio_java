@@ -14,7 +14,11 @@ public class Main {
             Question quiz = conector.getQuestion(1);
             Game newGame = new Game(user, quiz);
             newGame.renderQuestion();
-            newGame.check();
+                while (newGame.check()){
+                    newGame.renderQuestion();
+                }
+
+
         }catch (Exception e){
             logger.error(e.getMessage());
         }
