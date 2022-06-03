@@ -16,7 +16,6 @@ public class Main {
                     newGame.renderQuestion();
                 }
 
-
         }catch (Exception e){
             logger.error(e.getMessage());
         }
