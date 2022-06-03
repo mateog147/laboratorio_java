@@ -49,6 +49,10 @@ public abstract class Question {
 
     public abstract int level();
 
+    public void setCorrectAnswer(String correctAnswer) {
+        this.correctAnswer = correctAnswer;
+    }
+
     @Override
     public String toString() {
         return "\nPregunta: " + description + '\n' +

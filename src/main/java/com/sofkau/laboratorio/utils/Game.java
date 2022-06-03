@@ -4,11 +4,14 @@ import com.sofkau.laboratorio.interfaces.ValidatorInterface;
 
 import org.jboss.logging.Logger;
 
+import java.util.Scanner;
+
 public class Game implements ValidatorInterface {
     Player player;
     Question quiz;
     int gameScore;
-
+    int level;
+    protected static final Scanner scanner = new Scanner(System.in);
     static final Logger logger = Logger.getLogger("logger");
 
 
@@ -16,6 +19,7 @@ public class Game implements ValidatorInterface {
         this.player = player;
         this.quiz = quiz;
         this.gameScore = 0;
+        this.level=1;
     }
 
     public void renderQuestion(){
@@ -23,32 +27,36 @@ public class Game implements ValidatorInterface {
     }
     @Override
     public Boolean check() {
-        String answerSelected= Login.scanner.nextLine();
-        if (answerSelected.equalsIgnoreCase(quiz.getCorrectAnswer())) {
-            switch (level) {
-                case 1 -> this.gameScore += 100;
-                case 2 -> this.gameScore += 200;
-                case 3 -> this.gameScore += 300;
-                case 4 -> this.gameScore += 400;
-                case 5 -> {
-                    this.gameScore += 500;
-                    win(level, answerCorrect, answerSelected);
-                }
-                default -> this.gameScore = 0;
+        String answerCorrect= quiz.getCorrectAnswer();
+        int indexOption = scanner.nextInt();
+        int indexCorrect = quiz.getOption().indexOf(answerCorrect)+1;
+        if(indexOption==indexCorrect){
+            this.level++;
+           //Logica de los puntajes
+
+
+            logger.info("Respuesta correcta");
+            try{
+                DbConector conectorCheck = DbConector.getInstance();
+                this.quiz = conectorCheck.getQuestion(level);
+                logger.info(this.level);
+            }catch (Exception error){
+
             }
 
             return true;
 
-        } else {
-            this.gameScore = 0;
-            gameOver(0);
+        }else {
+            logger.info("Respuesta incorrecta");
         }
-        return false;
+return false;
+
     }
+
 
     @Override
     public Boolean win(int level, String answerCorrect, String answerSelected) {
-        Boolean checkedAnswer = check(answerCorrect, answerSelected, level);
+        Boolean checkedAnswer = check();
         if (Boolean.TRUE.equals(checkedAnswer && level == 5)) {
 
             this.player.setScore(this.gameScore);
@@ -77,20 +85,6 @@ public class Game implements ValidatorInterface {
         return true;
     }
 
-    public void startGame (){
-        Login newLogin = new Login();
-        Player newPlayer = new Player(newLogin.getName()) ;
-        try {
-            DbConector conector = DbConector.getInstance();
-            Question quiz = conector.getQuestion(1);
-            Game newGame = new Game(newPlayer,quiz);
-        }catch (Exception error){
-
-        }
-
-
-
-    }
 }
 
 
