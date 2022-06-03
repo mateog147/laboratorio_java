@@ -1,5 +1,4 @@
 package com.sofkau.laboratorio.utils;
-
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
-
 public class DbConector {
     private String rootPath ;
     private String path;
@@ -87,6 +84,10 @@ public class DbConector {
             answerList.add(res.getString("RESPUESTA3"));
             answerList.add(res.getString("RESPUESTA4"));
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> Diego
             LevelOne newQuestion = new LevelOne(res.getString("DESCRIPCION"), res.getString("CORRECTA"),answerList,"test");
             return newQuestion;
 

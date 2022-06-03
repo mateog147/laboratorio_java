@@ -32,8 +32,7 @@ public class Game implements ValidatorInterface {
         int indexCorrect = quiz.getOption().indexOf(answerCorrect)+1;
         if(indexOption==indexCorrect){
             this.level++;
-           //Logica de los puntajes
-
+            //Logica de los puntajes
 
             logger.info("Respuesta correcta");
             try{
@@ -41,7 +40,7 @@ public class Game implements ValidatorInterface {
                 this.quiz = conectorCheck.getQuestion(level);
                 logger.info(this.level);
             }catch (Exception error){
-
+                logger.warn(error.getMessage());
             }
 
             return true;
@@ -49,7 +48,7 @@ public class Game implements ValidatorInterface {
         }else {
             logger.info("Respuesta incorrecta");
         }
-return false;
+        return false;
 
     }
 
@@ -86,6 +85,5 @@ return false;
     }
 
 }
-
 
 

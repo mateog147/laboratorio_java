@@ -6,7 +6,6 @@ public class Main {
 
     static final Logger logger = Logger.getLogger("logger");
     public static void main(String[] args) {
-
         try {
             DbConector conector = DbConector.getInstance();
             Login login = new Login();
@@ -14,9 +13,9 @@ public class Main {
             Question quiz = conector.getQuestion(1);
             Game newGame = new Game(user, quiz);
             newGame.renderQuestion();
-                while (newGame.check()){
-                    newGame.renderQuestion();
-                }
+            while (newGame.check()){
+                newGame.renderQuestion();
+            }
 
 
         }catch (Exception e){
@@ -26,3 +25,4 @@ public class Main {
 
     }
 }
+
