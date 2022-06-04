@@ -66,14 +66,14 @@ public class Game implements ValidatorInterface {
             try{
                 DbConector conectorCheck = DbConector.getInstance();
                 this.quiz = conectorCheck.getQuestion(level);
+                logger.info(this.level);
             }catch (Exception error){
                 logger.warn(error.getMessage());
             }
             return true;
-        }else if(indexOption==0) {
-            gameOver(1);
-        }else{
 
+        }else {
+            logger.info("Respuesta incorrecta");
             gameOver(0);
         }
         return false;
@@ -89,7 +89,6 @@ public class Game implements ValidatorInterface {
             this.player.setScore(this.gameScore);
             logger.info("¡HAS GANADO! !FELICITACIONES! \n Puntaje final: " + this.player.getScore());
             savePlayer();
-            printRanking();
     }
 
     /**
@@ -102,9 +101,11 @@ public class Game implements ValidatorInterface {
 
         if (condicion == 0) {
             logger.info("HAS PERDIDO, RESPUESTA INCORRECTA \n Puntaje final: 0");
+            savePlayer();
         } else {
             this.player.setScore(this.gameScore);
-            logger.info("TE HAS RETIRADO, GRACIAS POR PARTICIPAR \n Puntaje final: " + this.player.getScore()+" DOLARES!!");
+            logger.info("TE HAS RETIRADO, GRACIAS POR PARTICIPAR \n Puntaje final: " + this.player.getScore());
+            savePlayer();
         }
         savePlayer();
         printRanking();

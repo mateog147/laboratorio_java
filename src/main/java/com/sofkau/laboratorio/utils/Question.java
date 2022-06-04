@@ -1,50 +1,52 @@
 package com.sofkau.laboratorio.utils;
-
-import java.util.ArrayList;
-
+import java.util.List;
+/**
+ * Esta clase abstracta se defino el molde de las preguntas.Esta superclase sera extendia a sus clases hijas
+ * @author: Diego Felipe Muñoz Mosquera
+ * @version: 1.0.0
+ */
 public abstract class Question {
-    private String description;
-    private String correctAnswer;
-    private ArrayList<String> option;
+    //Campos de la clase
+    private final String description;
+    private final String correctAnswer;
+    private final List<String> option;
+    private  int score;
 
-    private int score;
-
-    public Question(String description, String correctAnswer, ArrayList<String> option , int score) {
+    /**
+     * Constructor para la serie de números aleatorios
+     * @param description El parámetro se define la pregunta
+     * @param correctAnswer El parámetro se define la respuesta correcta
+     * @param option Listado de las opciones de respuesta
+     * @param score El puntaje por cada respuesta correcta
+     */
+    protected Question(String description, String correctAnswer, List<String> option , int score) {
         this.description = description;
         this.correctAnswer = correctAnswer;
         this.option = option;
         this.score=score;
     }
-
+    /**
+     * Método que devuelve una pregunta
+     * @return String con la pregunta
+     */
     public String getDescription() {
         return description;
     }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+    /**
+     * Método que devuelve una pregunta
+     * @return String con la pregunta
+     */
     public String getCorrectAnswer() {
         return correctAnswer;
     }
-
-    public void getCorrectAnswer(String correctAnswer) {
-        this.correctAnswer = correctAnswer;
-    }
-
-    public ArrayList<String> getOption() {
+    /**
+     * Método que devuelve una listado de opciones
+     * @return List con la opciones de respuesta
+     */
+    public List<String> getOption() {
         return option;
     }
 
-    public void setOption(ArrayList<String> option) {
-        this.option = option;
-    }
-
-    public abstract int level();
-
-    public void setCorrectAnswer(String correctAnswer) {
-        this.correctAnswer = correctAnswer;
-    }
 
     public int getScore() {
         return score;
@@ -53,7 +55,10 @@ public abstract class Question {
     public void setScore(int score) {
         this.score = score;
     }
-
+    /**
+     * Método que una pregunta y sus opciones
+     * @return toString con la descripcion y opcines de respuesta
+     */
     @Override
     public String toString() {
 
