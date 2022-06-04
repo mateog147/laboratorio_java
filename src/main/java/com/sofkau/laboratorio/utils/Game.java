@@ -89,6 +89,7 @@ public class Game implements ValidatorInterface {
             this.player.setScore(this.gameScore);
             logger.info("¡HAS GANADO! !FELICITACIONES! \n Puntaje final: " + this.player.getScore());
             savePlayer();
+            printRanking();
     }
 
     /**
@@ -107,7 +108,6 @@ public class Game implements ValidatorInterface {
             logger.info("TE HAS RETIRADO, GRACIAS POR PARTICIPAR \n Puntaje final: " + this.player.getScore());
             savePlayer();
         }
-        savePlayer();
         printRanking();
     }
 
