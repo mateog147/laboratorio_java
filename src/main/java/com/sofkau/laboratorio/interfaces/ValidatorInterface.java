@@ -1,10 +1,12 @@
 package com.sofkau.laboratorio.interfaces;
-
-import com.sofkau.laboratorio.utils.Player;
-import com.sofkau.laboratorio.utils.Question;
-
+/**
+ * Interface que modela los metodos empleados para verificar y manejar los eventos del juego
+ * @author: @erickdiaz01
+ * @interface
+ * @date 03-06-2022
+ */
 public interface ValidatorInterface {
     public Boolean check();
-    public Boolean win(int level,String answerCorrect,String answerSelected);
-    public Boolean gameOver(int condicion);
+    public void win();
+    public void gameOver(int condicion);
 }
