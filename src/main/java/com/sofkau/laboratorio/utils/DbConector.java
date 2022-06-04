@@ -64,7 +64,7 @@ public class DbConector {
      */
     public Question getQuestion(int level) throws SQLException,ClassNotFoundException{
 
-        int index = random.nextInt(6);
+        int index = random.nextInt(5) +1;
         Class.forName(DBMS);
         Connection conec = DriverManager.getConnection(JDBC+path);
         try(Statement sta = conec.createStatement()){
